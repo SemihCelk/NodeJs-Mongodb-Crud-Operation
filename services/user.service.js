@@ -8,7 +8,7 @@ class UserService {
     return await user.save();
   }
   async userList(){
-    return await User.find({})
+    return await User.find()
   }
   async userDel(name){
     return await User.deleteOne({name: name})

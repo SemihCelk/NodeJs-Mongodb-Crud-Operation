@@ -10,3 +10,12 @@ app.listen(port,async()=>{
     await connectdb()
     console.log("server is listening to ",port);
 }) 
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    const message = err.message || "Unknown Error";
+    res.status(500).json({
+      message,
+      stack: err.stack,
+    });
+  }); 

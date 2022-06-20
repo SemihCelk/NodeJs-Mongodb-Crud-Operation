@@ -15,26 +15,42 @@ const createUser = async (req, res,next) => {
 }
 }
 const lister= async(req,res,next)=>{
-    const list = await UserService.userList()
-    res.status(200).json({
-        succes:true,
-        data:list
-    })
+    try {
+        const list = await UserService.userList()
+        res.status(200).json({
+            succes:true,
+            data:list
+        })
+    } catch (error) {
+        console.log(error);
+    }
 } 
 const deleter = async(req,res,next)=>{
     const name = req.body.name
-    const del = await UserService.userDel(name)
-    res.status(200).json({
-        succes:true,
-        data:del
-    })
+    try{
+        const del = await UserService.userDel(name)
+        res.status(200).json({
+            succes:true,
+            data:del
+        })
+    }
+    catch (error) {
+        console.log(error);
+    }
+   
 }
 const updater = async(req,res,next)=>{
     const id = req.body.id
-    const update = await userService.userUpdate(id)
-    res.status(200).json({
-        succes:true,
-        data:update
-    }) 
+    try {
+        const update = await userService.userUpdate(id)
+        res.status(200).json({
+            succes:true,
+            data:update
+        }) 
+    }
+    catch (error) {
+        console.log(error);
+        
+    }
 }
 module.exports = {createUser,lister,deleter,updater}
