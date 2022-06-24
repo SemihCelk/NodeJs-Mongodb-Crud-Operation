@@ -7,6 +7,7 @@ const createUser = async (req, res, next) => {
   const company = req.body.companyName;
   try {
     const user = await UserService.userCreate(name, surname, age, company);
+    console.log(user);
     res.status(201).json({
       succes: true,
       user: user,
@@ -19,6 +20,7 @@ const createUser = async (req, res, next) => {
 const lister = async (req, res, next) => {
   try {
     const list = await UserService.userList();
+    console.log(list);
     res.status(200).json({
       succes: true,
       data: list,
@@ -43,8 +45,13 @@ const deleter = async (req, res, next) => {
 };
 const updater = async (req, res, next) => {
   const id = req.body.id;
+  const name = req.body.name;
+  const surname = req.body.surname;
+  const age = req.body.age;
+  const company = req.body.companyName
   try {
-    const update = await userService.userUpdate(id);
+    const update = await UserService.userUpdate(id,surname,name,age,company);
+    console.log(update);
     res.status(200).json({
       succes: true,
       data: update,

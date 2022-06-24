@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     type: Number,
     required: true,
   },
-  companyName: {
+  companyName: { 
     type: String,
     required: true,
   },
