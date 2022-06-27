@@ -24,26 +24,41 @@ class awsService {
   }
 
   async bucketItemAdd(bucketName, fileWay) {
-    const file = "../projeler/projectphotos/login.png";
+    const file = "../projeler/projectphotos/admin-deleteuser.png";
     const fileStream = fs.createReadStream(file);
-    console.log(file);
     const uploadParams = {
       Bucket: "yazilibucket304",
       Key: path.basename(file),
       Body: fileStream,
     };
-    try {
-      const data = await s3Client.send(new PutObjectCommand(uploadParams));
-      console.log("Success", data);
-      return data; // For unit tests.
-    } catch (err) {
-      console.log("Error", err);
+    const fileName = file.split("/").pop();
+    const stats = fs.statSync(file);
+    const byte = stats.size;
+    const mb = byte / (1024 * 1024 * 1024);
+    const ext = file.split(".").pop();
+    if ((mb <= 5 && ext == "png") || ext == "jpeg") {
+      try {
+        const data = await s3Client.send(new PutObjectCommand(uploadParams));
+        return fileName;
+      } catch (error) {
+        console.log("Error", error);
+      }
+    } else {
+      return "Hatalı veri tipi girdiniz.";
     }
   }
 
   async list() {
     const command = new ListBucketsCommand("");
     return await s3Client.send(command);
+  }
+  async bucketObjectList() {
+    const bucketParams = { Bucket: "yazilibucket304" };
+    try {
+      return await s3Client.send(new ListObjectsCommand(bucketParams));
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

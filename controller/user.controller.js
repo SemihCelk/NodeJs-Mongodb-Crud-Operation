@@ -42,7 +42,7 @@ const deleter = async (req, res, next) => {
     console.log(error);
     next();
   }
-};
+}; 
 const updater = async (req, res, next) => {
   const id = req.body.id;
   const name = req.body.name;
@@ -60,5 +60,5 @@ const updater = async (req, res, next) => {
     console.log(error);
     next();
   }
-};
+}
 module.exports = { createUser, lister, deleter, updater };

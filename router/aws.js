@@ -4,6 +4,7 @@ const {
   createBucket,
   creaditem,
   list,
+  bucketItems
   //   bucketItems,
 } = require("../controller/aws.controller");
 
@@ -16,7 +17,7 @@ const multer_s3 = require("multer-s3");
 router.post("/", createBucket);
 router.post("/itempost", creaditem);
 router.get("/", list);
-// router.get("/items", bucketItems);
+router.get("/items", bucketItems);
 
 const uploadAWS = multer({
   storage: multer_s3({

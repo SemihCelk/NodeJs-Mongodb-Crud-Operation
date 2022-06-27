@@ -1,6 +1,4 @@
 const awsService = require("../services/aws.service");
-const FormData = require('form-data');
-const form = new FormData();
 
 const createBucket = async (req, res, next) => {
   const bucketName = req.body.bucketName;
@@ -16,16 +14,19 @@ const createBucket = async (req, res, next) => {
     next();
   }
 };
+
+
 const creaditem = async (req, res, next) => {
   
   const bucketName = req.body.bucketName;
   const fileWay = req.body.x;
   try {
     const creater = await awsService.bucketItemAdd(bucketName,fileWay)
-    console.log(creater);
+    const link ="https://yazilibucket304.s3.eu-central-1.amazonaws.com/"+creater
     res.status(200).json({
       succes: true,
       data: "Created new object.",
+      link:link
     });
   } catch (error) {
     console.log(error);
@@ -40,13 +41,13 @@ const list = async (req, res, next) => {
     data: lister.Buckets,
   });
 };
-// const bucketItems=async(req,res,next)=>{
-//   const bucketList = await awsService.bucketItems()
-//   console.log(bucketList);
-//   res.status(200).json({
-//     succes:true,
-//     data:bucketList
-//   })
-// }
+const bucketItems=async(req,res,next)=>{
+  const bucketList = await awsService.bucketObjectList()
+  console.log(bucketList.Contents);
+  res.status(200).json({
+    succes:true,
+    data:bucketList.Contents
+  })
+}
 
-module.exports = { createBucket, creaditem, list };
+module.exports = { createBucket, creaditem, list ,bucketItems};
