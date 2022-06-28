@@ -10,44 +10,58 @@ const createBucket = async (req, res, next) => {
       data: add,
     });
   } catch (error) {
-    console.log(error); 
+    console.log(error);
     next();
   }
 };
 
-
 const creaditem = async (req, res, next) => {
-  
-  const bucketName = req.body.bucketName;
-  const fileWay = req.body.x;
+  const file = "../projeler/projectphotos/userpage.png";
+  const bucketName = "yazilibucket304";
   try {
-    const creater = await awsService.bucketItemAdd(bucketName,fileWay)
-    const link ="https://yazilibucket304.s3.eu-central-1.amazonaws.com/"+creater
-    res.status(200).json({
-      succes: true,
-      data: "Created new object.",
-      link:link
-    });
+    const creater = await awsService.bucketItemAdd(bucketName, file);
+    if (creater!=="hata") {
+      res.status(200).json({
+        succes: true,
+        data: "Created new object.",
+        link: creater,
+      });
+    } else {
+      res.status(200).json({
+        succes: false,
+        data: "invalid file.",
+      });
+    }
   } catch (error) {
     console.log(error);
     next();
   }
 };
 const list = async (req, res, next) => {
-  const lister = await awsService.list();
-  console.log(lister.Buckets);
-  res.status(200).json({
-    succes: true,
-    data: lister.Buckets,
-  });
+  try {
+    const lister = await awsService.list();
+    console.log(lister.Buckets);
+    res.status(200).json({
+      succes: true,
+      data: lister.Buckets,
+    });
+  } catch (error) {
+    console.log(error);
+    next();
+  }
 };
-const bucketItems=async(req,res,next)=>{
-  const bucketList = await awsService.bucketObjectList()
-  console.log(bucketList.Contents);
-  res.status(200).json({
-    succes:true,
-    data:bucketList.Contents
-  })
-}
+const bucketObjects = async (req, res, next) => {
+  try {
+    const bucketList = await awsService.bucketObjectList();
+    console.log(bucketList.Contents);
+    res.status(200).json({
+      succes: true,
+      data: bucketList.Contents,
+    });
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+};
 
-module.exports = { createBucket, creaditem, list ,bucketItems};
+module.exports = { createBucket, creaditem, list, bucketObjects };

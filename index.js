@@ -3,12 +3,14 @@ const {connectdb} = require("./db")
 const userRouter = require("./router/user")
 const dataRouter = require("./router/data")
 const awsRouter = require("./router/aws")
+const testmulter = require("./router/multer")
 
 const port = process.env.NODE_PORT || 8080
 
 app.use("/api/v1/user",userRouter)
 app.use("/api/v1/data",dataRouter)
 app.use("/api/v1/aws",awsRouter)
+app.use("/api/v1/multer",testmulter)
 
 app.listen(port,async()=>{
     await connectdb()

@@ -12,22 +12,17 @@ const fs = require("fs");
 
 class awsService {
   async create_Bucket(bucketName) {
-    try {
-      const data = await s3Client.send(
-        new CreateBucketCommand({ Bucket: bucketName })
-      );
-      console.log("Successfully created a bucket called ", data.Location);
-      return await data; // For unit tests.
-    } catch (error) {
-      console.log("Error", error);
-    }
+    const data = await s3Client.send(
+      new CreateBucketCommand({ Bucket: bucketName })
+    );
+    console.log("Successfully created a bucket called ", data.Location);
+    return data;
   }
 
-  async bucketItemAdd(bucketName, fileWay) {
-    const file = "../projeler/projectphotos/admin-deleteuser.png";
+  async bucketItemAdd(bucketName, file) {
     const fileStream = fs.createReadStream(file);
     const uploadParams = {
-      Bucket: "yazilibucket304",
+      Bucket: bucketName,
       Key: path.basename(file),
       Body: fileStream,
     };
@@ -37,14 +32,11 @@ class awsService {
     const mb = byte / (1024 * 1024 * 1024);
     const ext = file.split(".").pop();
     if ((mb <= 5 && ext == "png") || ext == "jpeg") {
-      try {
-        const data = await s3Client.send(new PutObjectCommand(uploadParams));
-        return fileName;
-      } catch (error) {
-        console.log("Error", error);
-      }
-    } else {
-      return "Hatalı veri tipi girdiniz.";
+      const data = await s3Client.send(new PutObjectCommand(uploadParams));
+    const link ="https://yazilibucket304.s3.eu-central-1.amazonaws.com/"+fileName
+      return link;
+    }else{
+      return "hata"
     }
   }
 
@@ -54,11 +46,7 @@ class awsService {
   }
   async bucketObjectList() {
     const bucketParams = { Bucket: "yazilibucket304" };
-    try {
-      return await s3Client.send(new ListObjectsCommand(bucketParams));
-    } catch (error) {
-      console.log(error);
-    }
+    return await s3Client.send(new ListObjectsCommand(bucketParams));
   }
 }
 

@@ -4,7 +4,7 @@ const {
   createBucket,
   creaditem,
   list,
-  bucketItems
+  bucketObjects,
   //   bucketItems,
 } = require("../controller/aws.controller");
 
@@ -17,17 +17,18 @@ const multer_s3 = require("multer-s3");
 router.post("/", createBucket);
 router.post("/itempost", creaditem);
 router.get("/", list);
-router.get("/items", bucketItems);
+router.get("/items", bucketObjects);
 
 const uploadAWS = multer({
   storage: multer_s3({
     s3: s3,
     bucket: "yazilibucket304",
-    metadata: (_req, file, cb) => {
-      cb(null, { fieldName: file.fieldname });
+    contentType: multer_s3.AUTO_CONTENT_TYPE,
+    metadata: (_req, _file, cb) => {
+      cb(null, _file.originalname);
     },
     key: (_req, _file, cb) => {
-      cb(null,"ali"+ Date.now().toString() + ".png");
+      cb(null, Date.now().toString() + _file.originalname);
     },
   }),
 });
