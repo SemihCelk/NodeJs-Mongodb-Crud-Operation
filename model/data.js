@@ -10,13 +10,15 @@ const DataSchema = new Schema({
     type: String,
     required: true,
   },
-  itemImage: { 
+  imageURL: { 
     type: String,
     required: true,
   },
-  itemCompanyName: { 
-    type: String,
+  itemCompanyID: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref:"user",
     required: true,
+
   },
 });
 

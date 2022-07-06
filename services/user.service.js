@@ -14,8 +14,8 @@ class UserService {
   async userDel(name){
     return await User.deleteOne({name: name})
   } 
-  async userUpdate(id){
-   return await User.findByIdAndUpdate(id,{name:"test",surname:"as"})
+  async userUpdate(id,surname,name,age,company){
+   return await User.findByIdAndUpdate(id,{name:name,surname:surname,age:age,companyName:company})
   }
 }
 module.exports = new UserService();

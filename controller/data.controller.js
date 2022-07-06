@@ -1,18 +1,18 @@
-const { findOne } = require("../model/data");
 const serviceData = require("../services/data.service");
 
 const createItem = async (req, res, next) => {
   const itemName = req.body.name;
   const itemType = req.body.itemType;
-  const itemImage = req.body.itemImage;
-  const itemCompanyName = req.body.itemCompanyName;
+  const imageURL = req.body.imageURL;
+  const itemCompanyID = req.body.itemCompanyID;
   try {
     const data = await serviceData.createData(
       itemName,
       itemType,
-      itemImage,
-      itemCompanyName
+      imageURL,
+      itemCompanyID
     );
+    console.log(data)
     res.status(201).json({
       succes: true,
       data: data,
@@ -25,6 +25,7 @@ const createItem = async (req, res, next) => {
 const readItem = async (req, res, next) => {
   try {
     const list = await serviceData.reader();
+    console.log(list[0].itemCompanyID)
     res.status(200).json({
       succes: true,
       data: list,
@@ -38,15 +39,15 @@ const update = async (req, res, next) => {
   const id = req.body.id;
   const itemName = req.body.itemName;
   const itemType = req.body.itemType;
-  const itemImage = req.body.itemImage;
-  const itemCompanyName = req.body.itemCompanyName;
+  const imageURL = req.body.imageURL;
+  const companyName = req.body.companyName;
   try {
     const update = await serviceData.updater(
       id,
       itemName,
       itemType,
-      itemCompanyName,
-      itemImage
+      companyName,
+      imageURL
     );
     res.status(201).json({
       succes: true,
@@ -61,6 +62,7 @@ const deleteData = async (req, res, next) => {
   const id = req.body.id;
   try {
     const deleter = await serviceData.delete(id);
+    console.log(deleter);
   } catch (error) {
     console.log(error);
     next();
